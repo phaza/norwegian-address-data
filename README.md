@@ -10,7 +10,7 @@ This package contains functionality to parse Norwegian address information from 
 
 **Use the parser**
 
-Bare sosi file
+Bare SOSI file
 ```PHP
 $sosiparser = new SOSIParser(
 	function ( Address $address ) {
@@ -37,7 +37,8 @@ $unwrapper = new ZipUnwrapper( $file, $sosiparser );
 $unwrapper->parse();
 ```
 
-** Description of the address object **
+**Description of the address object**
+
 The address object comes in two flavours. One for addresses with a street and number (StreetAddress), and one for those 
 which doesn't have a street and number (CadastreAddress).
 
