@@ -37,7 +37,7 @@ $unwrapper = new ZipUnwrapper( $file, $sosiparser );
 $unwrapper->parse();
 ```
 
-**Description of the address object**
+**Description of the address objects**
 
 The address object comes in two flavours. One for addresses with a street and number (StreetAddress), and one for those 
 which doesn't have a street and number (CadastreAddress).
