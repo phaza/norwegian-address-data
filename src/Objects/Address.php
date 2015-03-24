@@ -46,14 +46,14 @@ abstract class Address implements AddressInterface {
 		}
 
 		$obj->id              = (int) substr( self::getSOSIValue( $buffer[0] ), 0, -1 );
-		$obj->municipality_id = self::getSOSIValue( $buffer[3] );
-		$obj->zip_code_id     = self::getSOSIValue( $buffer[ $zipStart + 1 ] );
+		$obj->municipality_id = str_pad( self::getSOSIValue( $buffer[3] ), 4, '0', STR_PAD_LEFT );
+		$obj->zip_code_id     = str_pad( self::getSOSIValue( $buffer[ $zipStart + 1 ] ), 4, '0', STR_PAD_LEFT );
 		$obj->zip_code_name   = self::unwrapString( self::getSOSIValue( $buffer[ $zipStart + 2 ] ) );
 		$obj->display         = self::unwrapString( self::findValue( $buffer, 'ADRESSETEKST' ) );
 		$obj->last_update     = DateTime::createFromFormat(
 			'Ymd',
 			self::findValue( $buffer, 'OPPDATERINGSDATO' ),
-			new DateTimeZone('Europe/Oslo')
+			new DateTimeZone( 'Europe/Oslo' )
 		);
 
 		$obj->last_update->setTime( 0, 0, 0 );
