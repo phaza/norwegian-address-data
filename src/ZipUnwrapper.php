@@ -47,7 +47,7 @@ class ZipUnwrapper {
 
 		foreach( $files as $basename => $file ) {
 			$zipFile = $this->getTmpPath( $file );
-			$handle  = fopen( sprintf('zip://%s#%s.sos', $zipFile, $basename), 'r' );
+			$handle  = fopen( sprintf( 'zip://%s#%s.sos', $zipFile, $basename ), 'r' );
 
 			if( $handle === false ) {
 				throw new RuntimeException( sprintf( 'Could not open "%s" for reading', $zipFile ) );
@@ -58,8 +58,11 @@ class ZipUnwrapper {
 			}
 			finally {
 				fclose( $handle );
+				unlink( $zipFile );
 			}
 		}
+
+		rmdir( $dir );
 	}
 
 	protected function getTmpPath( $file )
@@ -70,7 +73,7 @@ class ZipUnwrapper {
 	protected function getTmpDir()
 	{
 		if( $this->tmpDir ) {
-			unlink( $this->tmpDir );
+			rmdir( $this->tmpDir );
 		}
 
 		$tmpDir = tempnam( sys_get_temp_dir(), 'ziparchive' );
