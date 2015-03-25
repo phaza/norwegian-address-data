@@ -1,8 +1,11 @@
 <?php namespace Phaza\NorwegianAddressData;
 
+use FilesystemIterator;
 use Phaza\NorwegianAddressData\Exceptions\FileNotReadableException;
 use Phaza\NorwegianAddressData\Exceptions\ZipFileException;
 use Phaza\NorwegianAddressData\Parser\SOSIParserInterface;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use RuntimeException;
 use SplFileInfo;
 use ZipArchive;
@@ -62,7 +65,19 @@ class ZipUnwrapper {
 			}
 		}
 
-		rmdir( $dir );
+		$this->recursiveRmDir( $dir );
+	}
+
+	protected function recursiveRmDir( $dir )
+	{
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach($iterator as $path) {
+			$path->isDir() && !$path->isLink() ? rmdir($path->getPathname()) : unlink($path->getPathname());
+		}
 	}
 
 	protected function getTmpPath( $file )
@@ -73,7 +88,7 @@ class ZipUnwrapper {
 	protected function getTmpDir()
 	{
 		if( $this->tmpDir ) {
-			rmdir( $this->tmpDir );
+			$this->recursiveRmDir( $this->tmpDir );
 		}
 
 		$tmpDir = tempnam( sys_get_temp_dir(), 'ziparchive' );
