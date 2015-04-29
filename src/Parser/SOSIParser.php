@@ -3,7 +3,7 @@
 use Closure;
 use Phaza\NorwegianAddressData\Objects\Address;
 
-class SOSIParser implements SosiParserInterface {
+class SOSIParser implements SOSIParserInterface {
 	/**
 	 * @var Closure
 	 */
